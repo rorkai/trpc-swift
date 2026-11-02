@@ -1,0 +1,6 @@
+[default]
+locale = "en-gb"
+
+[files]
+ignore-hidden = false
+extend-exclude = [".git", "node_modules", "pnpm-lock.yaml"]

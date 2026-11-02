@@ -1,0 +1,14 @@
+node_modules
+coverage
+*.tsbuildinfo
+.DS_Store
+.env
+.env.*
+.npmrc
+
+# nix
+result
+result-*
+.direnv
+!.envrc
+.pre-commit-config.yaml

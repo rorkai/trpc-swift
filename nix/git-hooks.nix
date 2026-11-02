@@ -1,0 +1,67 @@
+{ lib, ... }:
+let
+  root = ./..;
+in
+{
+  perSystem =
+    { config, pkgs, ... }:
+    {
+      pre-commit = {
+        check.enable = false;
+        inherit pkgs;
+        settings = {
+          src = root;
+          package = pkgs.prek;
+          hooks = {
+            treefmt = {
+              enable = true;
+              name = "treefmt";
+              # prek runs file batches in parallel; treefmt's shared cache db would race between them.
+              entry = "${lib.getExe config.treefmt.build.wrapper} --no-cache";
+              files = ".*";
+              pass_filenames = true;
+              stages = [ "pre-commit" ];
+              priority = 10;
+            };
+            gitleaks-protect = {
+              enable = true;
+              name = "gitleaks";
+              entry = "${lib.getExe pkgs.gitleaks} protect --staged --config .gitleaks.toml";
+              pass_filenames = false;
+              always_run = true;
+              stages = [ "pre-commit" ];
+              priority = 20;
+            };
+            treefmt-check = {
+              enable = true;
+              name = "treefmt";
+              entry = "${lib.getExe config.treefmt.build.wrapper} --fail-on-change";
+              files = ".*";
+              pass_filenames = false;
+              stages = [ "pre-push" ];
+              priority = 0;
+            };
+            gitleaks-detect = {
+              enable = true;
+              name = "gitleaks";
+              entry = "${lib.getExe pkgs.gitleaks} detect --config .gitleaks.toml";
+              files = ".*";
+              pass_filenames = false;
+              always_run = true;
+              stages = [ "pre-push" ];
+              priority = 0;
+            };
+            vitest = {
+              enable = true;
+              name = "vitest";
+              entry = "${lib.getExe config.packages.pnpm} test";
+              files = "\\.(ts|swift|json)$";
+              pass_filenames = false;
+              stages = [ "pre-push" ];
+              priority = 10;
+            };
+          };
+        };
+      };
+    };
+}

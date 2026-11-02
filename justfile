@@ -1,0 +1,27 @@
+# Task runner. Run `just --list` to see everything.
+
+[private]
+default:
+    @just --list
+
+# Install the JS dependencies needed to work in this repository
+install:
+    pnpm install --frozen-lockfile
+    # The dev shell re-installs when the lockfile is newer than this stamp.
+    touch node_modules/.install-stamp
+
+# Run the fixture tests (Swift compilation is skipped without Xcode)
+test:
+    pnpm test
+
+# Regenerate the committed fixture outputs
+update-fixtures:
+    pnpm vitest run -u
+
+# Lint TypeScript with oxlint
+lint:
+    oxlint .
+
+# Format the whole tree via treefmt
+fmt:
+    nix fmt

@@ -1,0 +1,4 @@
+{
+  "$schema": "https://unpkg.com/oxlint/configuration_schema.json",
+  "ignorePatterns": ["node_modules", "coverage", ".git"]
+}
