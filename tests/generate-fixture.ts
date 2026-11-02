@@ -4,9 +4,9 @@ import { loadConfig } from "../src/config.ts";
 import { extractProcedures } from "../src/extract.ts";
 import { generateSwift } from "../src/swift.ts";
 
-/** Runs the generator on `<fixture>/trpc-to-swift.json` the way the CLI does. */
+/** Runs the generator on `<fixture>/trpc-swift.json` the way the CLI does. */
 export async function generateFixture(fixtureDir: string) {
-  const config = await loadConfig(resolve(fixtureDir, "trpc-to-swift.json"));
+  const config = await loadConfig(resolve(fixtureDir, "trpc-swift.json"));
   const { procedures, warnings } = extractProcedures({
     tsconfigPath: config.tsconfig,
     routerModulePath: config.router,
@@ -15,7 +15,7 @@ export async function generateFixture(fixtureDir: string) {
   });
   const swift = generateSwift(procedures, {
     namespace: config.namespace,
-    regenerateCommand: "trpc-to-swift trpc-to-swift.json",
+    regenerateCommand: "trpc-swift trpc-swift.json",
   });
   return { swift, warnings, outputPath: config.output };
 }

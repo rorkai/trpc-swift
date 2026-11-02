@@ -8,8 +8,8 @@ const testsDir = resolve(import.meta.dirname, "..");
 
 /** Writes a config into a fresh directory outside the repository, pointing back at a fixture router. */
 function setUp(fixture: string, procedures: readonly string[], extra: Record<string, unknown> = {}) {
-  const dir = mkdtempSync(join(tmpdir(), "trpc-to-swift-cli-"));
-  const configPath = join(dir, "trpc-to-swift.json");
+  const dir = mkdtempSync(join(tmpdir(), "trpc-swift-cli-"));
+  const configPath = join(dir, "trpc-swift.json");
   writeFileSync(
     configPath,
     JSON.stringify({
@@ -30,7 +30,7 @@ function run(args: readonly string[], cwd: string) {
 }
 
 // real-time-wait: each case spawns the CLI, which spawns the TypeScript 7 checker.
-describe("trpc-to-swift CLI", { timeout: 60_000 }, () => {
+describe("trpc-swift CLI", { timeout: 60_000 }, () => {
   test("writes the Swift file next to the config, whatever the working directory", () => {
     const { configPath, outputPath } = setUp("procedures", ["projects.list", "health.ping"]);
 

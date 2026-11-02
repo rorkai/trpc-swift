@@ -1,5 +1,5 @@
 {
-  "name": "@rork-ai/trpc-to-swift",
+  "name": "@rork-ai/trpc-swift",
   "version": "0.0.0",
   "description": "Generate Swift Codable types for tRPC procedures from the router's inferred TypeScript types",
   "homepage": "https://github.com/rorkai/trpc-swift#readme",
@@ -9,7 +9,7 @@
     "url": "git+https://github.com/rorkai/trpc-swift.git"
   },
   "bin": {
-    "trpc-to-swift": "./dist/cli.mjs"
+    "trpc-swift": "./dist/cli.mjs"
   },
   "files": [
     "dist",

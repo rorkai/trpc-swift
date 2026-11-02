@@ -45,5 +45,5 @@
     "procedures"
   ],
   "additionalProperties": false,
-  "title": "trpc-to-swift config"
+  "title": "trpc-swift config"
 }

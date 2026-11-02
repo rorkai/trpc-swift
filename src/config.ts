@@ -17,9 +17,9 @@ const configSchema = z
       .min(1)
       .meta({ description: "Dotted procedure paths to generate, such as `projects.list`." }),
   })
-  .meta({ title: "trpc-to-swift config" });
+  .meta({ title: "trpc-swift config" });
 
-type TrpcToSwiftConfig = z.infer<typeof configSchema>;
+type TrpcSwiftConfig = z.infer<typeof configSchema>;
 
 /** The config's JSON Schema, for the committed config-schema.json that editors validate against. */
 export function configJsonSchema() {
@@ -38,5 +38,5 @@ export async function loadConfig(configPath: string) {
     router: resolve(base, config.router),
     output: resolve(base, config.output),
     procedures: [...new Set(config.procedures)],
-  } satisfies TrpcToSwiftConfig;
+  } satisfies TrpcSwiftConfig;
 }
