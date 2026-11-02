@@ -10,6 +10,10 @@ install:
     # The dev shell re-installs when the lockfile is newer than this stamp.
     touch node_modules/.install-stamp
 
+# Bundle the CLI into dist/cli.mjs
+build:
+    vp pack
+
 # Run the fixture tests (Swift compilation is skipped without Xcode)
 test:
     pnpm test
