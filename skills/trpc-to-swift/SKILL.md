@@ -7,7 +7,7 @@ description: When adding, changing or checking Swift types generated from a tRPC
 
 trpc-to-swift turns the **inferred** TypeScript types of tRPC procedures into Swift `Codable` types. The router's implementation is the contract: no `.output()` schema is needed, and changing what a resolver returns changes the Swift.
 
-Config, options and generated output: `node_modules/@rorkai/trpc-to-swift/README.md`; every config key is described in `node_modules/@rorkai/trpc-to-swift/config-schema.json`.
+Config, options and generated output: `node_modules/@rork-ai/trpc-to-swift/README.md`; every config key is described in `node_modules/@rork-ai/trpc-to-swift/config-schema.json`.
 
 ## Workflow
 
