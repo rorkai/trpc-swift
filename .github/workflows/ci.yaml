@@ -72,3 +72,24 @@ jobs:
         with:
           path: node_modules/.vite/task-cache
           key: ${{ steps.vp-task-cache.outputs.cache-primary-key }}
+
+  linux:
+    name: swift linux
+    # The generated file must also build for server-side Swift, where URLSession lives in FoundationNetworking.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    container: swift:6.4.2-noble@sha256:bca121f6eb59fd80340d1296887b2698ed8f3eb9eca7d80c181f8af769dc7ee0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Each fixture's committed output is a whole generated file, so each is type-checked on its own.
+      - name: Type-check the generated Swift on Linux
+        run: |
+          for file in tests/*/Output.swift; do
+            echo "::group::$file"
+            swiftc -swift-version 6 -warnings-as-errors -typecheck "$file"
+            echo "::endgroup::"
+          done
