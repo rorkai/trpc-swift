@@ -28,6 +28,11 @@
       "type": "string",
       "description": "Generated Swift file, relative to this file."
     },
+    "client": {
+      "default": false,
+      "description": "Also generate TRPCClient, which sends each procedure over HTTP with tRPC's wire format.",
+      "type": "boolean"
+    },
     "procedures": {
       "minItems": 1,
       "type": "array",

@@ -9,3 +9,10 @@ extend-exclude = [".git", "node_modules", "pnpm-lock.yaml"]
 [default.extend-identifiers]
 labeled = "labeled"
 unlabeled = "unlabeled"
+# Platform and protocol identifiers in the generated client: Foundation's
+# JSONSerialization and Error.localizedDescription, the HTTP Authorization
+# header and tRPC's UNAUTHORIZED error code.
+JSONSerialization = "JSONSerialization"
+localizedDescription = "localizedDescription"
+Authorization = "Authorization"
+UNAUTHORIZED = "UNAUTHORIZED"

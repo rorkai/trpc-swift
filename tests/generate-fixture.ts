@@ -7,7 +7,7 @@ import { generateSwift } from "../src/swift.ts";
 /** Runs the generator on `<fixture>/trpc-swift.json` the way the CLI does. */
 export async function generateFixture(fixtureDir: string) {
   const config = await loadConfig(resolve(fixtureDir, "trpc-swift.json"));
-  const { procedures, warnings } = extractProcedures({
+  const { procedures, warnings, transformer } = extractProcedures({
     tsconfigPath: config.tsconfig,
     routerModulePath: config.router,
     routerTypeName: config.routerType,
@@ -15,6 +15,8 @@ export async function generateFixture(fixtureDir: string) {
   });
   const swift = generateSwift(procedures, {
     namespace: config.namespace,
+    client: config.client,
+    superJSON: transformer,
     regenerateCommand: "trpc-swift trpc-swift.json",
   });
   return { swift, warnings, outputPath: config.output };

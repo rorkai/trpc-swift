@@ -25,11 +25,17 @@ export type ExtractOptions = {
   procedures: readonly string[];
 };
 
-export type ExtractResult = { procedures: WireProcedure[]; warnings: WireWarning[] };
+export type ExtractResult = {
+  procedures: WireProcedure[];
+  warnings: WireWarning[];
+  /** Whether the router serialises through a transformer, which this generator takes to be SuperJSON. */
+  transformer: boolean;
+};
 
 const PROBE_FILE_NAME = "__trpc_swift_probe__.ts";
 const PROBE_TSCONFIG_NAME = "tsconfig.__trpc_swift_probe__.json";
 const ROUTER_PROBE_NAME = "RouterProbe";
+const TRANSFORMER_PROBE_NAME = "TransformerProbe";
 
 const NULLISH = TypeFlags.Null | TypeFlags.Undefined | TypeFlags.Void;
 const ABSENT = TypeFlags.Undefined | TypeFlags.Void;
@@ -146,7 +152,10 @@ export function extractProcedures(options: ExtractOptions): ExtractResult {
   if (unresolved.length > 0) {
     throw new UnresolvedTypeError({ locations: unresolved });
   }
-  return { procedures, warnings };
+  const transformerType = exported.get(TRANSFORMER_PROBE_NAME);
+  // tRPC types the setting as `true` once `initTRPC.create({ transformer })` names one, else `false`.
+  const transformer = transformerType?.isBooleanLiteralType() === true ? transformerType.value : true;
+  return { procedures, warnings, transformer };
 }
 
 /** The probe module, and a lookup from a position in it back to the procedure whose line it falls on. */
@@ -162,6 +171,7 @@ function buildProbeSource(options: ExtractOptions, projectDir: string) {
     // A subscription's inferred output is the async iterable itself; a client handles one yielded message at a time.
     `type Message<T> = T extends AsyncIterable<infer M> ? M : T;`,
     `export type ${ROUTER_PROBE_NAME} = Router;`,
+    `export type ${TRANSFORMER_PROBE_NAME} = Router["_def"]["_config"]["$types"]["transformer"];`,
   ];
   const procedureLines = options.procedures.map((path, index) => {
     const access = path
@@ -254,7 +264,7 @@ class WireTypeConverter {
     }
     // SuperJSON's json half carries a bigint as its decimal string.
     if (flags & (TypeFlags.BigInt | TypeFlags.BigIntLiteral)) {
-      return { kind: "string" };
+      return { kind: "string", bigint: true };
     }
     if (type.isUnionType()) {
       return this.convertUnion(type.getTypes(), location);
@@ -366,7 +376,11 @@ class WireTypeConverter {
       const [element] = this.checker.getTypeArguments(type);
       return element == null
         ? this.unsupported(location, "list without element type")
-        : { kind: "array", element: this.convert(element, `${location}[]`) };
+        : {
+            kind: "array",
+            element: this.convert(element, `${location}[]`),
+            ...(symbolName === "Set" || symbolName === "ReadonlySet" ? { set: true as const } : {}),
+          };
     }
     // SuperJSON sends these as values its `meta` restores, so their own properties never reach JSON.
     if (symbolName === "Map" || symbolName === "ReadonlyMap") {
