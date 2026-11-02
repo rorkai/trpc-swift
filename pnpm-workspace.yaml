@@ -17,3 +17,9 @@ shellEmulator: true
 pmOnFail: ignore
 
 autoDedupe: true
+
+# Vite+ provides `vite` as @voidzero-dev/vite-plus-core, versioned with Vite+
+# rather than Vite, so vitest's `vite` peer range never matches it.
+peerDependencyRules:
+  allowedVersions:
+    vite: "*"
