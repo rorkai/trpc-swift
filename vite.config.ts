@@ -8,6 +8,8 @@ export default defineConfig({
   },
   pack: {
     entry: ["src/cli.ts"],
+    publint: true,
+    unused: true,
     exports: {
       // A CLI, not a library: the entry becomes `bin`, and importing the package exposes no module.
       bin: true,
