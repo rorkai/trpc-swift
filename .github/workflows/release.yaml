@@ -82,3 +82,31 @@ jobs:
       - run: vp install --frozen-lockfile
       # The tag checkout is a detached HEAD, which pnpm's branch check rejects.
       - run: just publish --no-git-checks
+
+  # The GitHub release comes last, so it only appears once the version is on
+  # npm. changelogithub writes the notes from the Conventional Commits since
+  # the previous tag, which it finds with `git tag --points-at HEAD`; hence the
+  # tag checkout with full history.
+  release:
+    needs:
+      - tagpr
+      - npm
+    if: needs.tagpr.outputs.tag != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.tagpr.outputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
+        with:
+          github_access_token: ${{ github.token }}
+      - run: nix profile install --inputs-from . nixpkgs#nodejs_24 .#pnpm .#vp
+      - run: vp install --frozen-lockfile
+      - run: vp exec changelogithub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
