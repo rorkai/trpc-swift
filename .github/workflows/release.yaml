@@ -55,3 +55,30 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           HEAD_REF: ${{ fromJSON(needs.tagpr.outputs.pull_request).head.ref }}
         run: gh workflow run ci.yaml --repo "$GITHUB_REPOSITORY" --ref "$HEAD_REF"
+
+  # Trusted publishing: npm exchanges this job's OIDC token for a short-lived
+  # publish credential, so the repository holds no npm token. npm matches the
+  # token against the trusted publisher configured on npmjs.com, which names
+  # this workflow file (release.yaml).
+  npm:
+    needs: tagpr
+    if: needs.tagpr.outputs.tag != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.tagpr.outputs.tag }}
+          persist-credentials: false
+      - uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
+        with:
+          github_access_token: ${{ github.token }}
+      # pnpm 12 performs the OIDC exchange itself and attaches provenance once
+      # the repository is public.
+      - run: nix profile install --inputs-from . nixpkgs#nodejs_24 nixpkgs#just .#pnpm .#vp
+      - run: vp install --frozen-lockfile
+      # The tag checkout is a detached HEAD, which pnpm's branch check rejects.
+      - run: just publish --no-git-checks

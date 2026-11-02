@@ -6,6 +6,10 @@ Most tRPC routers have no `.output()` schemas, so schema-based generators (OpenA
 
 ## Usage
 
+```sh
+npm install --save-dev @rorkai/trpc-to-swift
+```
+
 Create a config next to your Swift sources:
 
 ```json
