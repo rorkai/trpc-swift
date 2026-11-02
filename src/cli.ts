@@ -26,7 +26,7 @@ const command = define({
   },
   run: async (ctx) => {
     const config = await loadConfig(ctx.values.config);
-    const { procedures, warnings } = extractProcedures({
+    const { procedures, warnings, transformer } = extractProcedures({
       tsconfigPath: config.tsconfig,
       routerModulePath: config.router,
       routerTypeName: config.routerType,
@@ -39,6 +39,8 @@ const command = define({
 
     const swift = generateSwift(procedures, {
       namespace: config.namespace,
+      client: config.client,
+      superJSON: transformer,
       // The config's file name alone keeps the header the same whichever directory the CLI runs from.
       regenerateCommand: `trpc-swift ${basename(ctx.values.config)}`,
     });

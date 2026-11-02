@@ -1,0 +1,8 @@
+{
+  "$schema": "../../config-schema.json",
+  "tsconfig": "../tsconfig.json",
+  "router": "./router.ts",
+  "output": "./Output.swift",
+  "client": true,
+  "procedures": ["plain.search", "plain.rename", "plain.noop", "plain.forbidden"]
+}

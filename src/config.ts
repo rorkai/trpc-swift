@@ -12,6 +12,10 @@ const configSchema = z
     routerType: z.string().default("AppRouter").meta({ description: "Exported type name of the router." }),
     namespace: z.string().default("TRPC").meta({ description: "Swift enum that holds every generated procedure." }),
     output: z.string().meta({ description: "Generated Swift file, relative to this file." }),
+    client: z
+      .boolean()
+      .default(false)
+      .meta({ description: "Also generate TRPCClient, which sends each procedure over HTTP with tRPC's wire format." }),
     procedures: z
       .array(z.string().regex(/^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$/))
       .min(1)

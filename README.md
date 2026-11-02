@@ -46,6 +46,19 @@ Run `--check` in CI or a pre-commit hook to catch server changes that would brea
 - String and boolean literal unions as enums; tagged object unions as enums with associated values
 - Shapes Swift cannot represent (recursive types, `unknown`, tuples, untagged unions, `Map`) fall back to `TRPCJSONValue` with a warning
 
+### Generated client
+
+Set `"client": true` to also generate `TRPCClient`, which sends each procedure with tRPC's HTTP wire format: a query as a GET with `?input=`, a mutation as a POST. With a SuperJSON router it adds the `meta` that restores `Date`, `Set` and `bigint` inputs on the server, as the TypeScript client does.
+
+```swift
+let client = TRPCClient(baseURL: URL(string: "https://api.example.com/trpc")!) { request in
+    request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+}
+let projects = try await client.call(TRPC.Projects.List.self, .init(limit: 20))
+```
+
+A failed call throws `TRPCClientError`: `.server(code:httpStatus:)` when the procedure threw, `.decoding` when the response no longer matches the generated types, and `.transport` otherwise. To keep your own networking, use `TRPCWire.request(for:input:baseURL:)` and `TRPCWire.output(of:from:httpStatus:)` directly. Subscriptions and batching are not supported.
+
 ### Agent skill
 
 The package ships an [agent skill](https://agentskills.io) in `skills/trpc-swift`, so a coding agent knows how to regenerate the types and fix fallbacks. pnpm 12.11+ links it into the project's agent skill directories once you approve it with `pnpm approve`.

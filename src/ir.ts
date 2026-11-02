@@ -1,13 +1,15 @@
 /** The JSON shape of a tRPC input or output, reduced to what Swift `Codable` can express. */
 export type WireType =
-  | { kind: "string" }
+  /** `bigint` marks a JSON string that SuperJSON restores to a bigint. */
+  | { kind: "string"; bigint?: true }
   | { kind: "number" }
   | { kind: "boolean" }
   | { kind: "date" }
   | { kind: "void" }
   | { kind: "json" }
   | { kind: "stringEnum"; values: readonly string[] }
-  | { kind: "array"; element: WireType }
+  /** `set` marks a JSON array that SuperJSON restores to a Set. */
+  | { kind: "array"; element: WireType; set?: true }
   | { kind: "record"; value: WireType }
   /**
    * `null` or a missing key. `omittable` is false for `T | null`, whose key must

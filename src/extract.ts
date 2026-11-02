@@ -25,11 +25,17 @@ export type ExtractOptions = {
   procedures: readonly string[];
 };
 
-export type ExtractResult = { procedures: WireProcedure[]; warnings: WireWarning[] };
+export type ExtractResult = {
+  procedures: WireProcedure[];
+  warnings: WireWarning[];
+  /** Whether the router serialises through a transformer, which this generator takes to be SuperJSON. */
+  transformer: boolean;
+};
 
 const PROBE_FILE_NAME = "__trpc_swift_probe__.ts";
 const PROBE_TSCONFIG_NAME = "tsconfig.__trpc_swift_probe__.json";
 const ROUTER_PROBE_NAME = "RouterProbe";
+const TRANSFORMER_PROBE_NAME = "TransformerProbe";
 
 const NULLISH = TypeFlags.Null | TypeFlags.Undefined | TypeFlags.Void;
 const ABSENT = TypeFlags.Undefined | TypeFlags.Void;
@@ -139,14 +145,17 @@ export function extractProcedures(options: ExtractOptions): ExtractResult {
       path,
       kind: procedureKind(typeOf("Kind")),
       input: converter.convert(typeOf("Input"), "input"),
-      output: converter.convert(typeOf("Output"), "output"),
+      output: noValue(typeOf("Output")) ? { kind: "void" } : converter.convert(typeOf("Output"), "output"),
     };
   });
 
   if (unresolved.length > 0) {
     throw new UnresolvedTypeError({ locations: unresolved });
   }
-  return { procedures, warnings };
+  const transformerType = exported.get(TRANSFORMER_PROBE_NAME);
+  // tRPC types the setting as `true` once `initTRPC.create({ transformer })` names one, else `false`.
+  const transformer = transformerType?.isBooleanLiteralType() === true ? transformerType.value : true;
+  return { procedures, warnings, transformer };
 }
 
 /** The probe module, and a lookup from a position in it back to the procedure whose line it falls on. */
@@ -162,6 +171,7 @@ function buildProbeSource(options: ExtractOptions, projectDir: string) {
     // A subscription's inferred output is the async iterable itself; a client handles one yielded message at a time.
     `type Message<T> = T extends AsyncIterable<infer M> ? M : T;`,
     `export type ${ROUTER_PROBE_NAME} = Router;`,
+    `export type ${TRANSFORMER_PROBE_NAME} = Router["_def"]["_config"]["$types"]["transformer"];`,
   ];
   const procedureLines = options.procedures.map((path, index) => {
     const access = path
@@ -180,6 +190,15 @@ function buildProbeSource(options: ExtractOptions, projectDir: string) {
     return options.procedures[line - header.length];
   };
   return { source, procedureAt };
+}
+
+/**
+ * An output of `never` carries no value: without a transformer tRPC's serialisation turns a
+ * `void` result into `never`, as JSON has no `undefined`, and a resolver that always throws
+ * infers it too. Either way the response has no data, which the client reads as `TRPCVoid`.
+ */
+function noValue(type: Type) {
+  return (type.flags & TypeFlags.Never) !== 0;
 }
 
 function procedureKind(type: Type): ProcedureKind {
@@ -245,7 +264,7 @@ class WireTypeConverter {
     }
     // SuperJSON's json half carries a bigint as its decimal string.
     if (flags & (TypeFlags.BigInt | TypeFlags.BigIntLiteral)) {
-      return { kind: "string" };
+      return { kind: "string", bigint: true };
     }
     if (type.isUnionType()) {
       return this.convertUnion(type.getTypes(), location);
@@ -357,7 +376,11 @@ class WireTypeConverter {
       const [element] = this.checker.getTypeArguments(type);
       return element == null
         ? this.unsupported(location, "list without element type")
-        : { kind: "array", element: this.convert(element, `${location}[]`) };
+        : {
+            kind: "array",
+            element: this.convert(element, `${location}[]`),
+            ...(symbolName === "Set" || symbolName === "ReadonlySet" ? { set: true as const } : {}),
+          };
     }
     // SuperJSON sends these as values its `meta` restores, so their own properties never reach JSON.
     if (symbolName === "Map" || symbolName === "ReadonlyMap") {
