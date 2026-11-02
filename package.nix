@@ -28,7 +28,8 @@ let
   };
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = packageJson.name;
+  # A store path name cannot hold the npm scope's slash.
+  pname = lib.last (lib.splitString "/" packageJson.name);
   inherit (packageJson) version;
   inherit src;
 
@@ -68,7 +69,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    packageDir=$out/lib/node_modules/${finalAttrs.pname}
+    packageDir=$out/lib/node_modules/${packageJson.name}
     mkdir -p $packageDir $out/bin
     cp -r dist package.json config-schema.json $packageDir/
 
@@ -88,6 +89,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   meta = {
     inherit (packageJson) description homepage;
+    license = lib.getLicenseFromSpdxId packageJson.license;
     inherit mainProgram;
     platforms = [
       "x86_64-linux"

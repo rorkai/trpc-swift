@@ -1,9 +1,9 @@
 {
-  "name": "trpc-to-swift",
+  "name": "@rorkai/trpc-to-swift",
   "version": "0.0.0",
-  "private": true,
   "description": "Generate Swift Codable types for tRPC procedures from the router's inferred TypeScript types",
   "homepage": "https://github.com/rorkai/trpc-swift#readme",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rorkai/trpc-swift.git"
@@ -20,6 +20,9 @@
   "exports": {
     "./config-schema.json": "./config-schema.json",
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "test": "vp test",
