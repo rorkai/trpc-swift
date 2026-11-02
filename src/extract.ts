@@ -139,7 +139,7 @@ export function extractProcedures(options: ExtractOptions): ExtractResult {
       path,
       kind: procedureKind(typeOf("Kind")),
       input: converter.convert(typeOf("Input"), "input"),
-      output: converter.convert(typeOf("Output"), "output"),
+      output: noValue(typeOf("Output")) ? { kind: "void" } : converter.convert(typeOf("Output"), "output"),
     };
   });
 
@@ -180,6 +180,15 @@ function buildProbeSource(options: ExtractOptions, projectDir: string) {
     return options.procedures[line - header.length];
   };
   return { source, procedureAt };
+}
+
+/**
+ * An output of `never` carries no value: without a transformer tRPC's serialisation turns a
+ * `void` result into `never`, as JSON has no `undefined`, and a resolver that always throws
+ * infers it too. Either way the response has no data, which the client reads as `TRPCVoid`.
+ */
+function noValue(type: Type) {
+  return (type.flags & TypeFlags.Never) !== 0;
 }
 
 function procedureKind(type: Type): ProcedureKind {
