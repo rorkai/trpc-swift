@@ -1,0 +1,6 @@
+{
+  "tsconfig": "../tsconfig.json",
+  "router": "./router.ts",
+  "output": "./Output.swift",
+  "procedures": ["inputs.defaults", "inputs.transforms", "inputs.nested", "inputs.discriminated", "inputs.primitive"]
+}
