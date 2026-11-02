@@ -23,6 +23,15 @@ in
               stages = [ "pre-commit" ];
               priority = 10;
             };
+            vp-check-fix = {
+              enable = true;
+              name = "vp check";
+              entry = "${lib.getExe config.packages.vp} check --fix --no-error-on-unmatched-pattern";
+              files = "\\.(ts|js|mjs|json|jsonc|md|ya?ml)$";
+              pass_filenames = true;
+              stages = [ "pre-commit" ];
+              priority = 5;
+            };
             gitleaks-protect = {
               enable = true;
               name = "gitleaks";
@@ -51,10 +60,19 @@ in
               stages = [ "pre-push" ];
               priority = 0;
             };
-            vitest = {
+            vp-check = {
               enable = true;
-              name = "vitest";
-              entry = "${lib.getExe config.packages.pnpm} test";
+              name = "vp check";
+              entry = "${lib.getExe config.packages.vp} check";
+              files = "\\.(ts|js|mjs|json|jsonc|md|ya?ml)$";
+              pass_filenames = false;
+              stages = [ "pre-push" ];
+              priority = 0;
+            };
+            vp-test = {
+              enable = true;
+              name = "vp test";
+              entry = "${lib.getExe config.packages.vp} test";
               files = "\\.(ts|swift|json)$";
               pass_filenames = false;
               stages = [ "pre-push" ];

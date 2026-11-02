@@ -17,8 +17,6 @@
             statix
             typos
             typos-lsp
-            oxfmt
-            oxlint
             actionlint
             zizmor
             just

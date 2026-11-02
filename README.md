@@ -44,7 +44,7 @@ The development environment is provided by Nix. With [direnv](https://direnv.net
 ```sh
 just test             # fixture tests; Swift compilation runs only where Xcode is installed
 just update-fixtures  # regenerate tests/*/Output.swift
-just lint
+just check            # vp check: format, lint and type-check
 just fmt
 ```
 

@@ -36,9 +36,6 @@ in
     in
     {
       checks = {
-        oxlint = mkRepoCheck "oxlint-check" [ pkgs.oxlint ] ''
-          oxlint .
-        '';
         gitleaks = mkRepoCheck "gitleaks-check" [ pkgs.gitleaks ] ''
           gitleaks detect --source . --config .gitleaks.toml --no-git
         '';

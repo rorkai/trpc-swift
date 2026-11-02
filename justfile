@@ -18,10 +18,11 @@ test:
 update-fixtures:
     vp test -u
 
-# Lint TypeScript with oxlint
-lint:
-    oxlint .
+# Format, lint and type-check through Vite+
+check:
+    vp check
 
-# Format the whole tree via treefmt
+# Format the whole tree: Vite+ for JS/TS/JSON/Markdown/YAML, treefmt for the rest
 fmt:
+    vp check --fix
     nix fmt

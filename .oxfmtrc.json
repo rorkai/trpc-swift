@@ -1,5 +1,0 @@
-{
-  "$schema": "https://unpkg.com/oxfmt/configuration_schema.json",
-  "printWidth": 120,
-  "ignorePatterns": ["node_modules", "coverage", ".git", "pnpm-lock.yaml", "tests/*/Output.swift"]
-}

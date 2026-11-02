@@ -50,4 +50,4 @@ jobs:
         with:
           primary-key: nix-${{ github.job }}-${{ runner.os }}-${{ hashFiles('flake.lock', 'flake.nix', 'nix/**') }}
           restore-prefixes-first-match: nix-${{ github.job }}-${{ runner.os }}-
-      - run: nix develop --command just test
+      - run: nix develop --command just check test
