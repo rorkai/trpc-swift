@@ -14,9 +14,6 @@ importers:
       gunshi:
         specifier: ^0.35.3
         version: 0.35.3
-      semver:
-        specifier: ^7.8.5
-        version: 7.8.5
       ts-pattern:
         specifier: 5.9.0
         version: 5.9.0
@@ -30,9 +27,6 @@ importers:
       '@types/node':
         specifier: 24.19.2
         version: 24.19.2
-      '@types/semver':
-        specifier: ^7.8.0
-        version: 7.8.0
       changelogithub:
         specifier: 15.0.5
         version: 15.0.5
@@ -458,9 +452,6 @@ packages:
 
   '@types/node@24.19.2':
     resolution: {integrity: sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ==}
-
-  '@types/semver@7.8.0':
-    resolution: {integrity: sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==}
 
   '@typescript/typescript-aix-ppc64@7.1.0-beta':
     resolution: {integrity: sha512-DXDG+jIWxBHGdoO70tcHON33rCnSzsEZj9P13oyf/r/KEGIo6awsdSNVNjAw0uMwEpqRu75IrgCcW58YcVkZHg==}
@@ -1790,8 +1781,6 @@ snapshots:
   '@types/node@24.19.2':
     dependencies:
       undici-types: 7.24.6
-
-  '@types/semver@7.8.0': {}
 
   '@typescript/typescript-aix-ppc64@7.1.0-beta':
     optional: true
