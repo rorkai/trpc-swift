@@ -76,9 +76,16 @@ jobs:
       - uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
         with:
           github_access_token: ${{ github.token }}
-      # pnpm 12 performs the OIDC exchange itself and attaches provenance once
-      # the repository is public.
-      - run: nix profile install --inputs-from . nixpkgs#nodejs_24 nixpkgs#just .#pnpm .#vp
+      # As in ccusage, Node comes from setup-node with registry-url, which the
+      # npm registry auth needs; publishing without it failed the trusted
+      # publishing token exchange. pnpm 12 performs that exchange itself and
+      # attaches provenance from a public repository.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          registry-url: "https://registry.npmjs.org"
+          node-version: lts/*
+          package-manager-cache: false
+      - run: nix profile install --inputs-from . nixpkgs#just .#pnpm .#vp
       - run: vp install --frozen-lockfile
       # The tag checkout is a detached HEAD, which pnpm's branch check rejects.
       - run: just publish --no-git-checks
