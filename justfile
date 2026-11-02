@@ -16,7 +16,7 @@ test:
 
 # Regenerate the committed fixture outputs
 update-fixtures:
-    pnpm vitest run -u
+    vp test -u
 
 # Lint TypeScript with oxlint
 lint:
