@@ -42,6 +42,10 @@ Run `--check` in CI or a pre-commit hook to catch server changes that would brea
 - String and boolean literal unions as enums; tagged object unions as enums with associated values
 - Shapes Swift cannot represent (recursive types, `unknown`, tuples, untagged unions, `Map`) fall back to `TRPCJSONValue` with a warning
 
+### Agent skill
+
+The package ships an [agent skill](https://agentskills.io) in `skills/trpc-to-swift`, so a coding agent knows how to regenerate the types and fix fallbacks. pnpm 12.11+ links it into the project's agent skill directories once you approve it with `pnpm approve`.
+
 ## Development
 
 The development environment is provided by Nix. With [direnv](https://direnv.net/), `direnv allow` loads it; otherwise run `nix develop`. The shell installs the pnpm dependencies and the git hooks.

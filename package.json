@@ -13,7 +13,8 @@
   },
   "files": [
     "dist",
-    "config-schema.json"
+    "config-schema.json",
+    "skills"
   ],
   "type": "module",
   "exports": {
