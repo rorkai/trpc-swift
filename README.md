@@ -39,6 +39,8 @@ With Nix, `nix run github:rorkai/trpc-swift -- trpc-swift.json` runs it without 
 
 Run `--check` in CI or a pre-commit hook to catch server changes that would break the Swift client.
 
+Every pull request and every commit on `main` is also published as a preview through [pkg.pr.new](https://pkg.pr.new/~/rorkai/trpc-swift), so an unreleased fix can be tried before it reaches npm. The pull request's pkg.pr.new comment gives the `npx` command that runs it.
+
 ### What is generated
 
 - One namespace per router, with `Input` / `Output` types per procedure
