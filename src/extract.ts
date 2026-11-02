@@ -29,6 +29,7 @@ export type ExtractResult = { procedures: WireProcedure[]; warnings: WireWarning
 
 const PROBE_FILE_NAME = "__trpc_to_swift_probe__.ts";
 const PROBE_TSCONFIG_NAME = "tsconfig.__trpc_to_swift_probe__.json";
+const ROUTER_PROBE_NAME = "RouterProbe";
 
 const NULLISH = TypeFlags.Null | TypeFlags.Undefined | TypeFlags.Void;
 const ABSENT = TypeFlags.Undefined | TypeFlags.Void;
@@ -108,6 +109,18 @@ export function extractProcedures(options: ExtractOptions): ExtractResult {
     ]),
   );
 
+  // A router type re-exported from a name that does not exist leaves the probe itself error-free: the diagnostic
+  // belongs to the module that re-exports it, and every procedure type silently resolves to an error type.
+  if (exported.get(ROUTER_PROBE_NAME)?.isErrorType() !== false) {
+    const routerDiagnostics = project.program.getSemanticDiagnostics(options.routerModulePath).map((d) => d.text);
+    throw new ProbeTypeCheckError({
+      diagnostics: [
+        `${options.routerTypeName} from ${relative(projectDir, options.routerModulePath)} does not resolve to a type`,
+        ...routerDiagnostics,
+      ],
+    });
+  }
+
   const warnings: WireWarning[] = [];
   const unresolved: string[] = [];
   const procedures = options.procedures.map((path, index): WireProcedure => {
@@ -146,6 +159,7 @@ function buildProbeSource(options: ExtractOptions, projectDir: string) {
     `type Inputs = inferRouterInputs<Router>;`,
     `type Outputs = inferRouterOutputs<Router>;`,
     `type Procedures = Router["_def"]["record"];`,
+    `export type ${ROUTER_PROBE_NAME} = Router;`,
   ];
   const procedureLines = options.procedures.map((path, index) => {
     const access = path
