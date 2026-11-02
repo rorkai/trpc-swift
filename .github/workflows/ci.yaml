@@ -52,4 +52,23 @@ jobs:
         with:
           primary-key: nix-${{ github.job }}-${{ runner.os }}-${{ hashFiles('flake.lock', 'flake.nix', 'nix/**') }}
           restore-prefixes-first-match: nix-${{ github.job }}-${{ runner.os }}-
+      # Install first: the task cache is restored afterwards because installing can
+      # rewrite node_modules, where the cache lives.
+      - run: nix develop --command just install
+      # vp fingerprints the files each task reads, so the key only separates runners
+      # and each run saves a fresh entry; the newest earlier one is restored.
+      - name: Restore Vite+ task cache
+        id: vp-task-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: node_modules/.vite/task-cache
+          key: vp-task-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            vp-task-${{ runner.os }}-${{ runner.arch }}-
       - run: nix develop --command just check test
+      - name: Save Vite+ task cache
+        if: success()
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: node_modules/.vite/task-cache
+          key: ${{ steps.vp-task-cache.outputs.cache-primary-key }}
