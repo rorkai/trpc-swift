@@ -6,7 +6,7 @@ default:
 
 # Install the JS dependencies needed to work in this repository
 install:
-    pnpm install --frozen-lockfile
+    vp install --frozen-lockfile
     # The dev shell re-installs when the lockfile is newer than this stamp.
     touch node_modules/.install-stamp
 
@@ -16,7 +16,7 @@ build:
 
 # Run the fixture tests (Swift compilation is skipped without Xcode)
 test:
-    pnpm test
+    vp test
 
 # Regenerate the committed fixture outputs
 update-fixtures:
