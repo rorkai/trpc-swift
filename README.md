@@ -10,7 +10,7 @@ Create a config next to your Swift sources:
 
 ```json
 {
-  "$schema": "./node_modules/trpc-to-swift/config-schema.json",
+  "$schema": "https://raw.githubusercontent.com/rorkai/trpc-swift/main/config-schema.json",
   "tsconfig": "../api/tsconfig.json",
   "router": "../api/src/router.ts",
   "routerType": "AppRouter",
