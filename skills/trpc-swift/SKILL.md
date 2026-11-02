@@ -20,6 +20,6 @@ Config, options and generated output: `node_modules/@rork-ai/trpc-swift/README.m
 ## Using the types in Swift
 
 - Each procedure is `<Namespace>.<Router>.<Procedure>` (default namespace `TRPC`) conforming to `TRPCProcedure`, with `path`, `kind`, `Input` and `Output`. A procedure without input or output uses `TRPCVoid`.
-- The types describe the `json` half of a SuperJSON payload. Decode and encode with `TRPCCoding.makeDecoder()` / `makeEncoder()`, which handle SuperJSON's date strings; the HTTP transport is the app's own.
+- Call procedures with the generated `TRPCClient` (`client.call(TRPC.Projects.List.self, input)`), or build and read requests with `TRPCWire` when the app keeps its own networking. Both send SuperJSON's `meta` for `Date`, `Set` and `bigint` inputs; a hand-written transport usually forgets it. `"client": false` in the config generates the types alone.
 - Inputs follow the schema's input side: a key with a zod `.default()` is optional, and a `T | null` key is still sent as `null`.
 - A subscription's `Output` is one message, not the stream.

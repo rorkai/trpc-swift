@@ -50,7 +50,7 @@ Every pull request and every commit on `main` is also published as a preview thr
 
 ### Generated client
 
-Set `"client": true` to also generate `TRPCClient`, which sends each procedure with tRPC's HTTP wire format: a query as a GET with `?input=`, a mutation as a POST. With a SuperJSON router it adds the `meta` that restores `Date`, `Set` and `bigint` inputs on the server, as the TypeScript client does.
+The generated file includes `TRPCClient`, which sends each procedure with tRPC's HTTP wire format: a query as a GET with `?input=`, a mutation as a POST. With a SuperJSON router it adds the `meta` that restores `Date`, `Set` and `bigint` inputs on the server, as the TypeScript client does.
 
 ```swift
 let client = TRPCClient(baseURL: URL(string: "https://api.example.com/trpc")!) { request in
@@ -59,7 +59,7 @@ let client = TRPCClient(baseURL: URL(string: "https://api.example.com/trpc")!) {
 let projects = try await client.call(TRPC.Projects.List.self, .init(limit: 20))
 ```
 
-A failed call throws `TRPCClientError`: `.server(code:httpStatus:)` when the procedure threw, `.decoding` when the response no longer matches the generated types, and `.transport` otherwise. To keep your own networking, use `TRPCWire.request(for:input:baseURL:)` and `TRPCWire.output(of:from:httpStatus:)` directly. Subscriptions and batching are not supported.
+A failed call throws `TRPCClientError`: `.server(code:httpStatus:)` when the procedure threw, `.decoding` when the response no longer matches the generated types, and `.transport` otherwise. To keep your own networking, use `TRPCWire.request(for:input:baseURL:)` and `TRPCWire.output(of:from:httpStatus:)` directly, or set `"client": false` to generate the types alone. Subscriptions and batching are not supported.
 
 ### Agent skill
 

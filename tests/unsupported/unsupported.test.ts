@@ -8,6 +8,9 @@ test("generates the committed Swift", { timeout: 60_000 }, async () => {
   const { swift, warnings, outputPath } = await generateFixture(import.meta.dirname);
 
   await expect(swift).toMatchFileSnapshot(outputPath);
+  // `"client": false` keeps the output to the types, with nothing from the HTTP client.
+  expect(swift).not.toContain("TRPCClient");
+  expect(swift).not.toContain("FoundationNetworking");
   expect(warnings).toEqual([
     { procedure: "unsupported.shapes", location: "output.tree.children[]", reason: "recursive type" },
     { procedure: "unsupported.shapes", location: "output.payload", reason: "any or unknown" },

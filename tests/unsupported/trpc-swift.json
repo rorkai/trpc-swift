@@ -3,5 +3,6 @@
   "tsconfig": "../tsconfig.json",
   "router": "./router.ts",
   "output": "./Output.swift",
+  "client": false,
   "procedures": ["unsupported.shapes"]
 }

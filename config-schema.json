@@ -29,8 +29,8 @@
       "description": "Generated Swift file, relative to this file."
     },
     "client": {
-      "default": false,
-      "description": "Also generate TRPCClient, which sends each procedure over HTTP with tRPC's wire format.",
+      "default": true,
+      "description": "Generate TRPCClient and TRPCWire, which send each procedure over HTTP with tRPC's wire format. Set false to generate the types alone.",
       "type": "boolean"
     },
     "procedures": {
