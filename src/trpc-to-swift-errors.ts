@@ -17,3 +17,16 @@ export class UnresolvedTypeError extends ErrorFactory({
   message: ({ locations }) => `the checker could not resolve these types:\n${locations.join("\n")}`,
   fields: ErrorFactory.fields<{ locations: readonly string[] }>(),
 }) {}
+
+/**
+ * The router project resolves no `@trpc/server`, or one outside the supported range. The generator reads tRPC's
+ * internal router types, which change between majors, so it stops before they produce misleading errors.
+ */
+export class UnsupportedTrpcVersionError extends ErrorFactory({
+  name: "UnsupportedTrpcVersionError",
+  message: ({ found, supported, projectDir }) =>
+    found == null
+      ? `@trpc/server is not installed for ${projectDir}; trpc-to-swift supports ${supported}`
+      : `@trpc/server ${found} is installed for ${projectDir}, but trpc-to-swift supports ${supported}`,
+  fields: ErrorFactory.fields<{ found: string | undefined; supported: string; projectDir: string }>(),
+}) {}

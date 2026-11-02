@@ -13,6 +13,7 @@ import {
 
 import type { ObjectWireType, ProcedureKind, TagValue, WireProcedure, WireType, WireWarning } from "./ir.ts";
 import { ProbeTypeCheckError, UnresolvedTypeError } from "./trpc-to-swift-errors.ts";
+import { assertSupportedTrpc } from "./trpc-version.ts";
 
 export type ExtractOptions = {
   /** Absolute path of the tsconfig that type-checks the router module. */
@@ -51,6 +52,7 @@ const LIST_TYPES = new Set(["Array", "ReadonlyArray", "Set", "ReadonlySet"]);
  */
 export function extractProcedures(options: ExtractOptions): ExtractResult {
   const projectDir = dirname(options.tsconfigPath);
+  assertSupportedTrpc(projectDir);
   const probePath = join(projectDir, PROBE_FILE_NAME);
   const probeTsconfigPath = join(projectDir, PROBE_TSCONFIG_NAME);
   const probe = buildProbeSource(options, projectDir);
