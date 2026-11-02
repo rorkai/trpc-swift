@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "description": "JSON Schema for editor validation; ignored by the CLI.",
+      "type": "string"
+    },
+    "tsconfig": {
+      "type": "string",
+      "description": "tsconfig that type-checks the router, relative to this file."
+    },
+    "router": {
+      "type": "string",
+      "description": "Module exporting the router type, relative to this file."
+    },
+    "routerType": {
+      "default": "AppRouter",
+      "description": "Exported type name of the router.",
+      "type": "string"
+    },
+    "namespace": {
+      "default": "TRPC",
+      "description": "Swift enum that holds every generated procedure.",
+      "type": "string"
+    },
+    "output": {
+      "type": "string",
+      "description": "Generated Swift file, relative to this file."
+    },
+    "procedures": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+      },
+      "description": "Dotted procedure paths to generate, such as `projects.list`."
+    }
+  },
+  "required": [
+    "tsconfig",
+    "router",
+    "output",
+    "procedures"
+  ],
+  "additionalProperties": false,
+  "title": "trpc-to-swift config"
+}

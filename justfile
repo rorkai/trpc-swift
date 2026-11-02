@@ -1,0 +1,32 @@
+# Task runner. Run `just --list` to see everything.
+
+[private]
+default:
+    @just --list
+
+# Install the JS dependencies needed to work in this repository
+install:
+    vp install --frozen-lockfile
+    # The dev shell re-installs when the lockfile is newer than this stamp.
+    touch node_modules/.install-stamp
+
+# Bundle the CLI into dist/cli.mjs
+build:
+    vp pack
+
+# Run the fixture tests (Swift compilation is skipped without Xcode)
+test:
+    vp test
+
+# Regenerate the committed fixture outputs
+update-fixtures:
+    vp test -u
+
+# Format, lint and type-check through Vite+
+check:
+    vp check
+
+# Format the whole tree: Vite+ for JS/TS/JSON/Markdown/YAML, treefmt for the rest
+fmt:
+    vp check --fix
+    nix fmt

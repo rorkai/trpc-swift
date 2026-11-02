@@ -1,0 +1,7 @@
+{
+  "$schema": "../../config-schema.json",
+  "tsconfig": "../tsconfig.json",
+  "router": "./router.ts",
+  "output": "./Output.swift",
+  "procedures": ["user.profile", "projects.list", "projects.get", "projects.delete", "health.ping", "projects.update"]
+}

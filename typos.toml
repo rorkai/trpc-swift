@@ -1,0 +1,11 @@
+[default]
+locale = "en-gb"
+
+[files]
+ignore-hidden = false
+extend-exclude = [".git", "node_modules", "pnpm-lock.yaml"]
+
+# GitHub Actions event activity types, which must keep their US spelling.
+[default.extend-identifiers]
+labeled = "labeled"
+unlabeled = "unlabeled"

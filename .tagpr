@@ -1,0 +1,9 @@
+[tagpr]
+	releaseBranch = main
+	vPrefix = true
+	changelog = false
+	release = true
+	versionFile = package.json
+	# The first line of the template becomes the release PR title, so it stays a
+	# Conventional Commits header like every other commit on main.
+	template = .github/tagpr-template.md

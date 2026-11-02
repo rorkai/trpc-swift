@@ -1,0 +1,8 @@
+{
+  "$schema": "../../config-schema.json",
+  "tsconfig": "../tsconfig.json",
+  "router": "./index.ts",
+  "routerType": "ApiRouter",
+  "output": "./Output.swift",
+  "procedures": ["projects.list"]
+}

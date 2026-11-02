@@ -1,0 +1,14 @@
+{
+  "$schema": "../../config-schema.json",
+  "tsconfig": "../tsconfig.json",
+  "router": "./router.ts",
+  "output": "./Output.swift",
+  "procedures": [
+    "unions.scalars",
+    "unions.tagged",
+    "unions.booleanTagged",
+    "unions.inferredMembers",
+    "unions.untagged",
+    "unions.mixed"
+  ]
+}

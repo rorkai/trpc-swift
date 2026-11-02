@@ -1,0 +1,25 @@
+minimumReleaseAge: 2880
+
+# Security settings for supply chain attack prevention
+strictDepBuilds: true
+blockExoticSubdeps: true
+
+trustPolicy: no-downgrade
+# The ts7.1 beta line of tsrs is published without the provenance its earlier
+# releases carried. Pinned exactly so a future release is still checked.
+trustPolicyExclude:
+  - tsrs@0.20.1-ts7.1.0-beta
+
+shellEmulator: true
+
+# Nix pins pnpm for local development and CI, so pnpm should not download a
+# second package-manager binary or add its bootstrap metadata to the lockfile.
+pmOnFail: ignore
+
+autoDedupe: true
+
+# Vite+ provides `vite` as @voidzero-dev/vite-plus-core, versioned with Vite+
+# rather than Vite, so vitest's `vite` peer range never matches it.
+peerDependencyRules:
+  allowedVersions:
+    vite: "*"
