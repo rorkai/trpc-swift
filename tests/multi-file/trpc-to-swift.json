@@ -1,0 +1,16 @@
+{
+  "tsconfig": "./server/tsconfig.json",
+  "router": "./server/index.ts",
+  "routerType": "ApiRouter",
+  "namespace": "API",
+  "output": "./Output.swift",
+  "procedures": [
+    "ping",
+    "users.me",
+    "users.byId",
+    "projects.list",
+    "projects.members.list",
+    "projects.members.remove",
+    "reports.summary"
+  ]
+}

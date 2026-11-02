@@ -16,5 +16,7 @@
     "types": ["node", "vite-plus/test/globals"],
     "erasableSyntaxOnly": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts"],
+  // Type-checked through its own tsconfig, which declares the path aliases it imports through.
+  "exclude": ["tests/multi-file/server"]
 }

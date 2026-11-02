@@ -12,7 +12,7 @@ const configSchema = z.object({
   namespace: z.string().default("TRPC"),
   /** Generated Swift file, relative to the config file. */
   output: z.string(),
-  procedures: z.array(z.string().regex(/^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)+$/)).min(1),
+  procedures: z.array(z.string().regex(/^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$/)).min(1),
 });
 
 type TrpcToSwiftConfig = z.infer<typeof configSchema>;
