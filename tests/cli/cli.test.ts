@@ -7,7 +7,7 @@ const cliPath = resolve(import.meta.dirname, "../../src/cli.ts");
 const testsDir = resolve(import.meta.dirname, "..");
 
 /** Writes a config into a fresh directory outside the repository, pointing back at a fixture router. */
-function setUp(fixture: string, procedures: readonly string[]) {
+function setUp(fixture: string, procedures: readonly string[], extra: Record<string, unknown> = {}) {
   const dir = mkdtempSync(join(tmpdir(), "trpc-to-swift-cli-"));
   const configPath = join(dir, "trpc-to-swift.json");
   writeFileSync(
@@ -18,6 +18,7 @@ function setUp(fixture: string, procedures: readonly string[]) {
       // Relative paths resolve against the config file, not the working directory.
       output: "./Generated.swift",
       procedures,
+      ...extra,
     }),
   );
   return { dir, configPath, outputPath: join(dir, "Generated.swift") };
@@ -76,5 +77,17 @@ describe("trpc-to-swift CLI", { timeout: 60_000 }, () => {
     const { dir, configPath } = setUp("procedures", []);
 
     expect(run([configPath], dir)).toMatchObject({ status: 1, stderr: expect.stringContaining("procedures") });
+  });
+
+  test("rejects a misspelt key instead of falling back to its default", () => {
+    const { dir, configPath } = setUp("procedures", ["projects.list"], { routertype: "ApiRouter" });
+
+    expect(run([configPath], dir)).toMatchObject({ status: 1, stderr: expect.stringContaining("routertype") });
+  });
+
+  test("accepts the $schema key that editors use", () => {
+    const { dir, configPath } = setUp("procedures", ["projects.list"], { $schema: "./config-schema.json" });
+
+    expect(run([configPath], dir).status).toBe(0);
   });
 });

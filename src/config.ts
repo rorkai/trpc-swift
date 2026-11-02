@@ -3,7 +3,10 @@ import { dirname, resolve } from "node:path";
 
 import * as z from "zod/v4";
 
-const configSchema = z.object({
+// Strict, so a misspelt key such as `routertype` fails instead of silently falling back to the default.
+const configSchema = z.strictObject({
+  /** Lets a config point editors at its JSON Schema; the CLI ignores it. */
+  $schema: z.string().optional(),
   /** tsconfig that type-checks the router, relative to the config file. */
   tsconfig: z.string(),
   /** Module exporting the router type, relative to the config file. */
