@@ -37,7 +37,7 @@ export function typeCheckSwift(file: string) {
  * and encode real JSON with the generated types. One file must be `main.swift`.
  */
 export function runSwift(files: readonly string[]) {
-  const binary = join(mkdtempSync(join(tmpdir(), "trpc-to-swift-")), "main");
+  const binary = join(mkdtempSync(join(tmpdir(), "trpc-swift-")), "main");
   const build = swiftc(["-target", "arm64-apple-macos14.0", "-sdk", macSdk ?? "", "-o", binary, ...files]);
   if (build.status !== 0) {
     return { status: build.status, output: build.diagnostics };

@@ -38,7 +38,7 @@ export default defineConfig({
     },
   },
   test: {
-    name: "trpc-to-swift",
+    name: "trpc-swift",
     root: import.meta.dirname,
     globals: true,
     fsModuleCache: true,

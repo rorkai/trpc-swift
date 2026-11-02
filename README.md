@@ -1,13 +1,13 @@
-# trpc-to-swift
+# trpc-swift
 
 Generates Swift `Codable` types for tRPC procedures from the router's **inferred** TypeScript types.
 
-Most tRPC routers have no `.output()` schemas, so schema-based generators (OpenAPI, `trpc-swift`) cannot see the response types. `trpc-to-swift` asks the TypeScript 7 checker ([tsrs](https://github.com/oxc-project/tsrs)) for `inferRouterInputs` / `inferRouterOutputs` of each procedure instead, so the generated types are exactly what the implementation returns.
+Most tRPC routers have no `.output()` schemas, so schema-based generators (OpenAPI, or the unrelated unscoped [`trpc-swift`](https://www.npmjs.com/package/trpc-swift) package) cannot see the response types. `@rork-ai/trpc-swift` asks the TypeScript 7 checker ([tsrs](https://github.com/oxc-project/tsrs)) for `inferRouterInputs` / `inferRouterOutputs` of each procedure instead, so the generated types are exactly what the implementation returns.
 
 ## Usage
 
 ```sh
-npm install --save-dev @rork-ai/trpc-to-swift
+npm install --save-dev @rork-ai/trpc-swift
 ```
 
 Create a config next to your Swift sources:
@@ -31,11 +31,11 @@ $schema gives editors completion and validation; without an npm install, point i
 Paths are relative to the config file. `routerType` defaults to `AppRouter` and `namespace` to `TRPC`.
 
 ```sh
-trpc-to-swift trpc-to-swift.json          # write the Swift file
-trpc-to-swift trpc-to-swift.json --check  # exit 1 when the committed file is stale
+trpc-swift trpc-swift.json          # write the Swift file
+trpc-swift trpc-swift.json --check  # exit 1 when the committed file is stale
 ```
 
-With Nix, `nix run github:rorkai/trpc-swift -- trpc-to-swift.json` runs it without a Node setup of your own.
+With Nix, `nix run github:rorkai/trpc-swift -- trpc-swift.json` runs it without a Node setup of your own.
 
 Run `--check` in CI or a pre-commit hook to catch server changes that would break the Swift client.
 
@@ -48,7 +48,7 @@ Run `--check` in CI or a pre-commit hook to catch server changes that would brea
 
 ### Agent skill
 
-The package ships an [agent skill](https://agentskills.io) in `skills/trpc-to-swift`, so a coding agent knows how to regenerate the types and fix fallbacks. pnpm 12.11+ links it into the project's agent skill directories once you approve it with `pnpm approve`.
+The package ships an [agent skill](https://agentskills.io) in `skills/trpc-swift`, so a coding agent knows how to regenerate the types and fix fallbacks. pnpm 12.11+ links it into the project's agent skill directories once you approve it with `pnpm approve`.
 
 ## Development
 
@@ -61,4 +61,4 @@ just check            # vp check: format, lint and type-check
 just fmt
 ```
 
-Each directory under `tests/` is a fixture: a `router.ts`, a `trpc-to-swift.json`, and the committed `Output.swift` the generator must reproduce.
+Each directory under `tests/` is a fixture: a `router.ts`, a `trpc-swift.json`, and the committed `Output.swift` the generator must reproduce.

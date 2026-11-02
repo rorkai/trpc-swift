@@ -1,21 +1,21 @@
 ---
-name: trpc-to-swift
-description: When adding, changing or checking Swift types generated from a tRPC router with trpc-to-swift.
+name: trpc-swift
+description: When adding, changing or checking Swift types generated from a tRPC router with trpc-swift.
 ---
 
-# trpc-to-swift
+# trpc-swift
 
-trpc-to-swift turns the **inferred** TypeScript types of tRPC procedures into Swift `Codable` types. The router's implementation is the contract: no `.output()` schema is needed, and changing what a resolver returns changes the Swift.
+trpc-swift turns the **inferred** TypeScript types of tRPC procedures into Swift `Codable` types. The router's implementation is the contract: no `.output()` schema is needed, and changing what a resolver returns changes the Swift.
 
-Config, options and generated output: `node_modules/@rork-ai/trpc-to-swift/README.md`; every config key is described in `node_modules/@rork-ai/trpc-to-swift/config-schema.json`.
+Config, options and generated output: `node_modules/@rork-ai/trpc-swift/README.md`; every config key is described in `node_modules/@rork-ai/trpc-swift/config-schema.json`.
 
 ## Workflow
 
-1. Find the project's `trpc-to-swift.json` (it names the router, the tsconfig and the output file).
+1. Find the project's `trpc-swift.json` (it names the router, the tsconfig and the output file).
 2. To expose a procedure to Swift, add its dotted path (`projects.list`, or `ping` for a root procedure) to `procedures`.
-3. Regenerate with `trpc-to-swift <config>`. Never edit the generated file by hand; the next run overwrites it.
+3. Regenerate with `trpc-swift <config>`. Never edit the generated file by hand; the next run overwrites it.
 4. Read every `warning:` line. Each one is a shape the generator could not express and typed as `TRPCJSONValue`. Prefer fixing the TypeScript type on the server, following [references/warnings.md](references/warnings.md); accept the fallback only when the server is out of reach.
-5. Commit the generated file with the server change that caused it. CI or a git hook should run `trpc-to-swift <config> --check`, which exits 1 when the committed file is stale.
+5. Commit the generated file with the server change that caused it. CI or a git hook should run `trpc-swift <config> --check`, which exits 1 when the committed file is stale.
 
 ## Using the types in Swift
 

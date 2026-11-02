@@ -12,7 +12,7 @@ import {
 } from "tsrs/sync";
 
 import type { ObjectWireType, ProcedureKind, TagValue, WireProcedure, WireType, WireWarning } from "./ir.ts";
-import { ProbeTypeCheckError, UnresolvedTypeError } from "./trpc-to-swift-errors.ts";
+import { ProbeTypeCheckError, UnresolvedTypeError } from "./trpc-swift-errors.ts";
 
 export type ExtractOptions = {
   /** Absolute path of the tsconfig that type-checks the router module. */
@@ -27,8 +27,8 @@ export type ExtractOptions = {
 
 export type ExtractResult = { procedures: WireProcedure[]; warnings: WireWarning[] };
 
-const PROBE_FILE_NAME = "__trpc_to_swift_probe__.ts";
-const PROBE_TSCONFIG_NAME = "tsconfig.__trpc_to_swift_probe__.json";
+const PROBE_FILE_NAME = "__trpc_swift_probe__.ts";
+const PROBE_TSCONFIG_NAME = "tsconfig.__trpc_swift_probe__.json";
 const ROUTER_PROBE_NAME = "RouterProbe";
 
 const NULLISH = TypeFlags.Null | TypeFlags.Undefined | TypeFlags.Void;

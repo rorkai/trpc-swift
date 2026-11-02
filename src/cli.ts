@@ -3,8 +3,8 @@
  * Generates Swift `Codable` types for tRPC procedures from the router's
  * inferred TypeScript types.
  *
- *   trpc-to-swift <config.json>          write the Swift file
- *   trpc-to-swift <config.json> --check  exit 1 when the committed file is stale
+ *   trpc-swift <config.json>          write the Swift file
+ *   trpc-swift <config.json> --check  exit 1 when the committed file is stale
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { basename, relative } from "node:path";
@@ -18,10 +18,10 @@ import { generateSwift } from "./swift.ts";
 import packageJson from "../package.json" with { type: "json" };
 
 const command = define({
-  name: "trpc-to-swift",
+  name: "trpc-swift",
   description: "Generate Swift Codable types for tRPC procedures from the router's inferred TypeScript types",
   args: {
-    config: required(positional(string({ description: "Path to a trpc-to-swift.json config" }))),
+    config: required(positional(string({ description: "Path to a trpc-swift.json config" }))),
     check: boolean({ description: "Exit 1 instead of writing when the generated file is out of date" }),
   },
   run: async (ctx) => {
@@ -40,7 +40,7 @@ const command = define({
     const swift = generateSwift(procedures, {
       namespace: config.namespace,
       // The config's file name alone keeps the header the same whichever directory the CLI runs from.
-      regenerateCommand: `trpc-to-swift ${basename(ctx.values.config)}`,
+      regenerateCommand: `trpc-swift ${basename(ctx.values.config)}`,
     });
     const outputPath = relative(process.cwd(), config.output);
 
@@ -51,7 +51,7 @@ const command = define({
     }
     const current = await readFile(config.output, "utf8").catch(() => "");
     if (current !== swift) {
-      const cliPath = relative(process.cwd(), process.argv[1] ?? "trpc-to-swift");
+      const cliPath = relative(process.cwd(), process.argv[1] ?? "trpc-swift");
       console.error(`${outputPath} is out of date; regenerate it with: node ${cliPath} ${ctx.values.config}`);
       process.exitCode = 1;
       return;
@@ -61,7 +61,7 @@ const command = define({
 });
 
 await cli(process.argv.slice(2), command, {
-  name: "trpc-to-swift",
+  name: "trpc-swift",
   version: packageJson.version,
   renderHeader: null,
 });
