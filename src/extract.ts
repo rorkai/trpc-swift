@@ -159,6 +159,8 @@ function buildProbeSource(options: ExtractOptions, projectDir: string) {
     `type Inputs = inferRouterInputs<Router>;`,
     `type Outputs = inferRouterOutputs<Router>;`,
     `type Procedures = Router["_def"]["record"];`,
+    // A subscription's inferred output is the async iterable itself; a client handles one yielded message at a time.
+    `type Message<T> = T extends AsyncIterable<infer M> ? M : T;`,
     `export type ${ROUTER_PROBE_NAME} = Router;`,
   ];
   const procedureLines = options.procedures.map((path, index) => {
@@ -168,8 +170,8 @@ function buildProbeSource(options: ExtractOptions, projectDir: string) {
       .join("");
     return [
       `export type Input${index} = Inputs${access};`,
-      `export type Output${index} = Outputs${access};`,
       `export type Kind${index} = Procedures${access}["_def"]["type"];`,
+      `export type Output${index} = Kind${index} extends "subscription" ? Message<Outputs${access}> : Outputs${access};`,
     ].join(" ");
   });
   const source = `${[...header, ...procedureLines].join("\n")}\n`;
