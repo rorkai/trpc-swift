@@ -1,0 +1,17 @@
+{
+  "tsconfig": "../tsconfig.json",
+  "router": "./router.ts",
+  "output": "./Output.swift",
+  "procedures": [
+    "naming.keys",
+    "naming.arrays",
+    "naming.collisions",
+    "naming.tags",
+    "naming.sanitisedCollisions",
+    "naming.foo_bar",
+    "naming.fooBar",
+    "naming.type",
+    "naming.protocolNames",
+    "naming.encoderNames"
+  ]
+}
