@@ -10,6 +10,7 @@
           (with pkgs; [
             nodejs_24
             config.packages.pnpm
+            config.packages.vp
             config.treefmt.build.wrapper
             nixfmt
             deadnix

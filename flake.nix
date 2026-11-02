@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    nix-vite-plus = {
+      url = "github:ryoppippi/nix-vite-plus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,7 +24,6 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
-        "x86_64-darwin"
         "aarch64-darwin"
       ];
 
@@ -28,6 +31,7 @@
         inputs.treefmt-nix.flakeModule
         inputs.git-hooks.flakeModule
         ./nix/pnpm.nix
+        ./nix/vite-plus.nix
         ./nix/treefmt.nix
         ./nix/git-hooks.nix
         ./nix/checks.nix
