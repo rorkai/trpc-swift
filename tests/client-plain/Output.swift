@@ -2,6 +2,9 @@
 // Regenerate with: trpc-swift trpc-swift.json
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public enum TRPCProcedureKind: Sendable {
     case query
@@ -182,7 +185,8 @@ public enum TRPCWire {
             throw TRPCClientError(path: P.path, message: "subscriptions need a streaming transport", reason: .transport(httpStatus: nil))
         }
         let payload = try serialise(input, annotations: P.superJSONInput)
-        let url = baseURL.appending(path: P.path)
+        // appendingPathComponent rather than appending(path:), which needs iOS 16 and macOS 13 while the types alone do not.
+        let url = baseURL.appendingPathComponent(P.path)
         if P.kind == .query {
             var request = URLRequest(url: url)
             if let payload, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
