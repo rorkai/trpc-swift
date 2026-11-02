@@ -3,8 +3,8 @@ import { defineConfig } from "vite-plus";
 export default defineConfig({
   fmt: {
     printWidth: 120,
-    // The fixture outputs are golden files that the tests compare byte for byte.
-    ignorePatterns: ["tests/*/Output.swift"],
+    // Golden files that the tests compare byte for byte.
+    ignorePatterns: ["tests/*/Output.swift", "config-schema.json"],
   },
   pack: {
     entry: ["src/cli.ts"],

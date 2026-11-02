@@ -1,4 +1,5 @@
 {
+  "$schema": "../../config-schema.json",
   "tsconfig": "../tsconfig.json",
   "router": "./router.ts",
   "output": "./Output.swift",

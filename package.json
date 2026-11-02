@@ -12,9 +12,14 @@
     "trpc-to-swift": "./dist/cli.mjs"
   },
   "files": [
-    "dist"
+    "dist",
+    "config-schema.json"
   ],
   "type": "module",
+  "exports": {
+    "./config-schema.json": "./config-schema.json",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "test": "vp test",
     "build": "vp pack",

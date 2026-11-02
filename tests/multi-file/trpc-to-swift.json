@@ -1,4 +1,5 @@
 {
+  "$schema": "../../config-schema.json",
   "tsconfig": "./server/tsconfig.json",
   "router": "./server/index.ts",
   "routerType": "ApiRouter",

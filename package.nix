@@ -20,6 +20,7 @@ let
       ./package.json
       ./pnpm-lock.yaml
       ./pnpm-workspace.yaml
+      ./config-schema.json
       ./tsconfig.json
       ./vite.config.ts
       ./src
@@ -69,7 +70,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     packageDir=$out/lib/node_modules/${finalAttrs.pname}
     mkdir -p $packageDir $out/bin
-    cp -r dist package.json $packageDir/
+    cp -r dist package.json config-schema.json $packageDir/
 
     # The bundle inlines every runtime dependency except tsrs, a peer that a
     # production install never adds for the root package. tsrs has no
