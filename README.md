@@ -11,9 +11,7 @@
 <p align="centre">
     <a href="https://socket.dev/npm/package/@rork-ai/trpc-swift"><img src="https://socket.dev/api/badge/npm/package/@rork-ai/trpc-swift" alt="Socket Badge" /></a>
     <a href="https://npmjs.com/package/@rork-ai/trpc-swift"><img src="https://img.shields.io/npm/v/@rork-ai/trpc-swift?color=yellow" alt="npm version" /></a>
-    <a href="https://tanstack.com/stats/npm?packageGroups=%5B%7B%22packages%22:%5B%7B%22name%22:%22@rork-ai/trpc-swift%22%7D%5D%7D%5D&range=30-days&transform=none&binType=daily&showDataMode=all&height=400"><img src="https://img.shields.io/npm/dt/@rork-ai/trpc-swift" alt="NPM Downloads" /></a>
     <a href="https://github.com/rorkai/trpc-swift/actions/workflows/ci.yaml"><img src="https://github.com/rorkai/trpc-swift/actions/workflows/ci.yaml/badge.svg" alt="CI" /></a>
-    <a href="https://deepwiki.com/rorkai/trpc-swift"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" /></a>
 </p>
 
 Generates Swift `Codable` types for tRPC procedures from the router's **inferred** TypeScript types.
