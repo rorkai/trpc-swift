@@ -32,6 +32,7 @@
         inputs.git-hooks.flakeModule
         ./nix/pnpm.nix
         ./nix/vite-plus.nix
+        ./nix/packages.nix
         ./nix/treefmt.nix
         ./nix/git-hooks.nix
         ./nix/checks.nix

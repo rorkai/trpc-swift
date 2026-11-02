@@ -28,6 +28,8 @@ trpc-to-swift trpc-to-swift.json          # write the Swift file
 trpc-to-swift trpc-to-swift.json --check  # exit 1 when the committed file is stale
 ```
 
+With Nix, `nix run github:rorkai/trpc-swift -- trpc-to-swift.json` runs it without a Node setup of your own.
+
 Run `--check` in CI or a pre-commit hook to catch server changes that would break the Swift client.
 
 ### What is generated
