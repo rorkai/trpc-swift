@@ -22,7 +22,7 @@ Create a config next to your Swift sources:
 
 `tsrs` is a peer dependency: npm, pnpm and bun install it automatically, and a project that pins its own `tsrs` keeps that version.
 
-`$schema` gives editors completion and validation; without an npm install, point it at `https://raw.githubusercontent.com/rorkai/trpc-swift/main/config-schema.json` instead. Unknown keys are rejected, so a misspelt option fails rather than falling back to its default.
+$schema gives editors completion and validation; without an npm install, point it at https://raw.githubusercontent.com/rorkai/trpc-swift/main/config-schema.json instead. Unknown keys are rejected, so a misspelt option fails rather than falling back to its default.
 
 Paths are relative to the config file. `routerType` defaults to `AppRouter` and `namespace` to `TRPC`.
 
