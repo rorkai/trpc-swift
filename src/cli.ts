@@ -15,6 +15,7 @@ import { boolean, positional, required, string } from "gunshi/combinators";
 import { loadConfig } from "./config.ts";
 import { extractProcedures } from "./extract.ts";
 import { generateSwift } from "./swift.ts";
+import packageJson from "../package.json" with { type: "json" };
 
 const command = define({
   name: "trpc-to-swift",
@@ -59,4 +60,8 @@ const command = define({
   },
 });
 
-await cli(process.argv.slice(2), command, { name: "trpc-to-swift", renderHeader: null });
+await cli(process.argv.slice(2), command, {
+  name: "trpc-to-swift",
+  version: packageJson.version,
+  renderHeader: null,
+});
