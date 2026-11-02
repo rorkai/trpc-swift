@@ -55,3 +55,29 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           HEAD_REF: ${{ fromJSON(needs.tagpr.outputs.pull_request).head.ref }}
         run: gh workflow run ci.yaml --repo "$GITHUB_REPOSITORY" --ref "$HEAD_REF"
+
+  # Trusted publishing: npm exchanges this job's OIDC token for a short-lived
+  # publish credential, so the repository holds no npm token. npm matches the
+  # token against the trusted publisher configured on npmjs.com, which names
+  # this workflow file (release.yaml).
+  npm:
+    needs: tagpr
+    if: needs.tagpr.outputs.tag != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.tagpr.outputs.tag }}
+          persist-credentials: false
+      - uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
+        with:
+          github_access_token: ${{ github.token }}
+      # Node 24's npm (11.5.1+) is what speaks the OIDC exchange; vp builds the
+      # bundle in the prepack script.
+      - run: nix profile install --inputs-from . nixpkgs#nodejs_24 .#pnpm .#vp
+      - run: vp install --frozen-lockfile
+      - run: npm publish
