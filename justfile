@@ -14,6 +14,10 @@ install:
 build:
     vp pack
 
+# Build and publish to npm; CI passes --no-git-checks for its detached tag checkout
+publish *args: build
+    pnpm publish {{args}}
+
 # Run the fixture tests (Swift compilation is skipped without Xcode)
 test:
     vp test
