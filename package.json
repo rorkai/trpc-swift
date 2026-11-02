@@ -37,6 +37,7 @@
     "@trpc/server": "11.8.1",
     "@types/node": "24.19.2",
     "changelogithub": "15.0.5",
+    "pkg-pr-new": "0.0.93",
     "publint": "^0.3.25",
     "superjson": "2.2.2",
     "tsrs": "0.20.1-ts7.1.0-beta",
