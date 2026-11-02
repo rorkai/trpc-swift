@@ -8,8 +8,6 @@ export default defineConfig({
   },
   pack: {
     entry: ["src/cli.ts"],
-    // The CLI ships as one file; tsrs stays external as a peer so a project can pin its own.
-    deps: { onlyBundle: ["gunshi", "zod", "@praha/error-factory", "ts-pattern"] },
   },
   lint: {
     options: {

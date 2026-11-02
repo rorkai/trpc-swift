@@ -59,9 +59,20 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # Without saved state under HOME, vp asks on its first run whether to
     # manage Node itself, and the sandbox has no terminal to answer. As in CI
     # it then stays in system-first mode and uses the Node from
-    # nativeBuildInputs, downloading nothing.
-    export HOME=$TMPDIR CI=1
-    vp pack
+    # nativeBuildInputs, downloading nothing. HOME changes for vp alone, since
+    # pnpmConfigHook keeps its offline store setting in the original HOME.
+    HOME=$TMPDIR CI=1 vp pack
+
+    # The runtime install is the production dependencies plus tsrs, a peer that
+    # a production install never adds for the root package. tsrs has no
+    # dependencies besides the binary for this platform, so both are copied out
+    # of the full install with their symlinks resolved before it is replaced.
+    tsrsDir=$TMPDIR/tsrs
+    mkdir -p $tsrsDir
+    cp -rL node_modules/.pnpm/tsrs@${packageJson.devDependencies.tsrs}/node_modules/. $tsrsDir/
+    rm -rf node_modules
+    pnpm install --offline --prod --frozen-lockfile --ignore-scripts
+    cp -r $tsrsDir/. node_modules/
 
     runHook postBuild
   '';
@@ -71,14 +82,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     packageDir=$out/lib/node_modules/${packageJson.name}
     mkdir -p $packageDir $out/bin
-    cp -r dist package.json config-schema.json $packageDir/
-
-    # The bundle inlines every runtime dependency except tsrs, a peer that a
-    # production install never adds for the root package. tsrs has no
-    # dependencies of its own besides the binary for this platform, so both
-    # are copied out of pnpm's store layout with their symlinks resolved.
-    mkdir -p $packageDir/node_modules
-    cp -rL node_modules/.pnpm/tsrs@${packageJson.devDependencies.tsrs}/node_modules/. $packageDir/node_modules/
+    cp -r dist node_modules package.json config-schema.json $packageDir/
     ln -s $packageDir/${packageJson.bin.${mainProgram}} $out/bin/${mainProgram}
 
     runHook postInstall

@@ -29,16 +29,18 @@
     "build": "vp pack",
     "prepack": "vp pack"
   },
-  "devDependencies": {
+  "dependencies": {
     "@praha/error-factory": "^1.4.1",
+    "gunshi": "^0.35.3",
+    "ts-pattern": "5.9.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
     "@trpc/server": "11.8.1",
     "@types/node": "24.19.2",
-    "gunshi": "^0.35.3",
     "superjson": "2.2.2",
-    "ts-pattern": "5.9.0",
     "tsrs": "0.20.1-ts7.1.0-beta",
-    "vite-plus": "1.4.0",
-    "zod": "4.6.7"
+    "vite-plus": "1.4.0"
   },
   "peerDependencies": {
     "tsrs": "*"
