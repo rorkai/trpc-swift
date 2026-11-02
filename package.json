@@ -18,8 +18,8 @@
   ],
   "type": "module",
   "exports": {
-    "./config-schema.json": "./config-schema.json",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./config-schema.json": "./config-schema.json"
   },
   "publishConfig": {
     "access": "public"

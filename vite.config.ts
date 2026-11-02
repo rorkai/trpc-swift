@@ -8,6 +8,12 @@ export default defineConfig({
   },
   pack: {
     entry: ["src/cli.ts"],
+    exports: {
+      // A CLI, not a library: the entry becomes `bin`, and importing the package exposes no module.
+      bin: true,
+      exclude: ["cli"],
+      customExports: { "./config-schema.json": "./config-schema.json" },
+    },
   },
   lint: {
     options: {
