@@ -63,7 +63,7 @@ in
             vp-check = {
               enable = true;
               name = "vp check";
-              entry = "${lib.getExe config.packages.vp} check";
+              entry = "${lib.getExe config.packages.vp} run check";
               files = "\\.(ts|js|mjs|json|jsonc|md|ya?ml)$";
               pass_filenames = false;
               stages = [ "pre-push" ];
@@ -72,7 +72,7 @@ in
             vp-test = {
               enable = true;
               name = "vp test";
-              entry = "${lib.getExe config.packages.vp} test";
+              entry = "${lib.getExe config.packages.vp} run test";
               files = "\\.(ts|swift|json)$";
               pass_filenames = false;
               stages = [ "pre-push" ];

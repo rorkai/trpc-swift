@@ -24,10 +24,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "test": "vp test",
-    "build": "vp pack"
-  },
   "dependencies": {
     "@praha/error-factory": "^1.4.1",
     "gunshi": "^0.35.3",

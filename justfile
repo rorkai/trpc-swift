@@ -10,9 +10,9 @@ install:
     # The dev shell re-installs when the lockfile is newer than this stamp.
     touch node_modules/.install-stamp
 
-# Bundle the CLI into dist/cli.mjs
+# Bundle the CLI into dist/cli.mjs (cached by `vp run`, like check and test)
 build:
-    vp pack
+    vp run build
 
 # Build and publish to npm; CI passes --no-git-checks for its detached tag checkout
 publish *args: build
@@ -20,7 +20,7 @@ publish *args: build
 
 # Run the fixture tests (Swift compilation is skipped without Xcode)
 test:
-    vp test
+    vp run test
 
 # Regenerate the committed fixture outputs
 update-fixtures:
@@ -28,7 +28,7 @@ update-fixtures:
 
 # Format, lint and type-check through Vite+
 check:
-    vp check
+    vp run check
 
 # Format the whole tree: Vite+ for JS/TS/JSON/Markdown/YAML, treefmt for the rest
 fmt:
