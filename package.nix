@@ -56,12 +56,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   buildPhase = ''
     runHook preBuild
 
-    # Without saved state under HOME, vp asks on its first run whether to
-    # manage Node itself, and the sandbox has no terminal to answer. As in CI
-    # it then stays in system-first mode and uses the Node from
-    # nativeBuildInputs, downloading nothing. HOME changes for vp alone, since
-    # pnpmConfigHook keeps its offline store setting in the original HOME.
-    HOME=$TMPDIR CI=1 vp pack
+    # vp must use the declared tools rather than download runtimes in the sandbox.
+    # HOME changes for vp alone because pnpmConfigHook keeps its offline store
+    # setting in the original HOME.
+    HOME=$TMPDIR CI=1 VP_NODE_MANAGER=no VP_PM_MANAGER=no vp pack
 
     # The runtime install is the production dependencies plus tsrs, a peer that
     # a production install never adds for the root package. tsrs has no
