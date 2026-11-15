@@ -74,7 +74,7 @@ jobs:
         with:
           ref: ${{ needs.tagpr.outputs.tag }}
           persist-credentials: false
-      - uses: x-ryoppippi/setup-nix@7f7ff26554cbbf09c1ce4f3369ca8fd2120a42d1
+      - uses: rorkai/setup-nix@7f7ff26554cbbf09c1ce4f3369ca8fd2120a42d1
         with:
           github-token: ${{ github.token }}
       # As in ccusage, Node comes from setup-node with registry-url, which the
@@ -111,7 +111,7 @@ jobs:
           ref: ${{ needs.tagpr.outputs.tag }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: x-ryoppippi/setup-nix@7f7ff26554cbbf09c1ce4f3369ca8fd2120a42d1
+      - uses: rorkai/setup-nix@7f7ff26554cbbf09c1ce4f3369ca8fd2120a42d1
         with:
           github-token: ${{ github.token }}
       - run: nix profile install --inputs-from . nixpkgs#nodejs_24 .#pnpm .#vp
